@@ -15,6 +15,7 @@ Executive-facing MVP for assessing organizational readiness to adopt AI responsi
 - `lib/industry-config.js` industry profiles, sector-specific recommendations, and roadmap overlays
 - `lib/question-overrides.js` sector-specific wording overlays for lighter customization
 - `lib/question-sets.js` deeper sector-specific question sets for priority markets
+- `lib/brand-config.js` 2Nspira brand and CTA messaging
 - `lib/scoring.js` scoring engine, maturity logic, archetypes, summaries, roadmap generation
 
 ## Run

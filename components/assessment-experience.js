@@ -20,6 +20,7 @@ import { ASSESSMENT_CATEGORIES, SCALE_OPTIONS } from '@/lib/assessment-config';
 import { DEFAULT_INDUSTRY_ID, INDUSTRY_PROFILES } from '@/lib/industry-config';
 import { QUESTION_OVERRIDES } from '@/lib/question-overrides';
 import { INDUSTRY_QUESTION_SETS } from '@/lib/question-sets';
+import { BRAND } from '@/lib/brand-config';
 import {
   generateExecutiveSummary,
   generateNextSteps,
@@ -287,6 +288,18 @@ function ResultsView({ responses, industryProfile, onEdit }) {
         </div>
       </div>
 
+      <div className="panel" style={{ padding: 24 }}>
+        <div className="eyebrow">{BRAND.company} Advisory</div>
+        <h3 style={{ fontSize: 28, margin: '14px 0 10px', letterSpacing: '-0.03em' }}>{BRAND.advisoryCtaTitle}</h3>
+        <p className="muted" style={{ margin: 0, maxWidth: 840, lineHeight: 1.75 }}>
+          {BRAND.advisoryCtaBody}
+        </p>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 18 }}>
+          <button className="button-primary" type="button">{BRAND.advisoryPrimary}</button>
+          <button className="button-secondary" type="button">{BRAND.advisorySecondary}</button>
+        </div>
+      </div>
+
       <div className="export-sheet">
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 18 }}>
           <div>
@@ -397,9 +410,13 @@ export default function AssessmentExperience() {
             <div className="eyebrow">Executive assessment tool</div>
             <div className="hero-grid" style={{ alignItems: 'center', marginTop: 22 }}>
               <div>
-                <h1 className="hero-title">AI Readiness Scorecard</h1>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                  <div className="eyebrow">{BRAND.company}</div>
+                  <div className="badge" style={{ background: 'rgba(78,227,193,0.1)', color: '#bff8eb' }}>{BRAND.tagline}</div>
+                </div>
+                <h1 className="hero-title">{BRAND.product}</h1>
                 <p className="muted" style={{ fontSize: 18, lineHeight: 1.8, maxWidth: 720 }}>
-                  Evaluate whether your organization is prepared to adopt AI responsibly, effectively, and strategically across leadership, governance, people, workflows, and infrastructure.
+                  {BRAND.subtagline}
                 </p>
 
                 <div className="panel" style={{ padding: 18, marginTop: 24, maxWidth: 780 }}>
@@ -429,8 +446,8 @@ export default function AssessmentExperience() {
                 </div>
 
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28 }}>
-                  <button className="button-primary" onClick={() => setStarted(true)}>Start Assessment</button>
-                  <a className="button-secondary" href="#product-overview">View product overview</a>
+                  <button className="button-primary" onClick={() => setStarted(true)}>{BRAND.ctaPrimary}</button>
+                  <a className="button-secondary" href="#product-overview">{BRAND.ctaSecondary}</a>
                 </div>
               </div>
               <div className="panel" style={{ padding: 24 }}>
@@ -457,6 +474,13 @@ export default function AssessmentExperience() {
             <StatCard label="Audience" value={industryProfile.shortLabel} helper={industryProfile.audience} />
             <StatCard label="Assessment scope" value="8 Categories" helper="Covers strategy, governance, data, technology, risk, people, workflows, and trust." />
             <StatCard label="Experience" value="Premium MVP" helper="Tailored sector logic with an executive-style scoring and roadmap experience." />
+          </div>
+
+          <div className="panel" style={{ padding: 24 }}>
+            <div className="eyebrow">Why 2Nspira built this</div>
+            <p style={{ margin: '14px 0 0', lineHeight: 1.8, maxWidth: 980 }}>
+              {BRAND.footerNote}
+            </p>
           </div>
         </div>
       </div>
