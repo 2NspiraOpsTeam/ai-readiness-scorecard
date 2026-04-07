@@ -26,6 +26,7 @@ import { AI_EXPERIENCE_OPTIONS, ORG_SIZE_OPTIONS, REGULATED_OPTIONS, ROLE_OPTION
 import {
   generateContextualInsights,
   generateExecutiveSummary,
+  generatePublicSignalInsights,
   generateNextSteps,
   generatePriorityGaps,
   generateRoadmap,
@@ -179,6 +180,7 @@ function ResultsView({ responses, orgProfile, industryId, industryProfile, onEdi
   const nextSteps = useMemo(() => generateNextSteps(results, industryProfile), [results, industryProfile]);
   const roadmap = useMemo(() => generateRoadmap(results, industryProfile), [results, industryProfile]);
   const contextualInsights = useMemo(() => generateContextualInsights(results, orgProfile, industryProfile), [results, orgProfile, industryProfile]);
+  const publicSignalInsights = useMemo(() => generatePublicSignalInsights(orgProfile, industryProfile), [orgProfile, industryProfile]);
   const narrative = RESULT_NARRATIVES[industryId] || {};
   const contactHref = `mailto:${BRAND.contactEmail}?subject=${encodeURIComponent(BRAND.contactSubject)}&body=${encodeURIComponent(`Hello 2Nspira,\n\nI completed the AI Readiness Scorecard and would like to discuss next steps.\n\nOrganization: ${orgProfile.organizationName || ''}\nSector: ${industryProfile.label}\nRole: ${orgProfile.role || ''}\nOrganization Size: ${orgProfile.organizationSize || ''}\nAI Experience: ${orgProfile.aiExperience || ''}\nWebsite: ${orgProfile.website || ''}\nRegion: ${orgProfile.geography || ''}\nRegulated Environment: ${orgProfile.regulatedEnvironment || ''}\nEmail: ${orgProfile.email || ''}\nOverall Score: ${results.overallScore}\nMaturity Level: ${results.maturity.label}\n\nPlease follow up with me regarding advisory support.\n`)}`;
 
@@ -203,10 +205,17 @@ function ResultsView({ responses, orgProfile, industryId, industryProfile, onEdi
         <StatCard label="Regulated environment" value={orgProfile.regulatedEnvironment || 'Not provided'} helper="Used to sharpen risk and governance interpretation." />
       </div>
 
-      <div className="panel" style={{ padding: 24 }}>
-        <div className="eyebrow">360° interpretation layer</div>
-        <p style={{ margin: '14px 0 16px', lineHeight: 1.8 }}>This result combines your internal readiness inputs with organizational context so the interpretation reflects not only score patterns, but also the operating realities of your organization.</p>
-        <ul className="list-clean">{contextualInsights.map((item) => <li key={item}><span className="dot" style={{ background: '#7c9cff' }} /><div className="muted" style={{ lineHeight: 1.7 }}>{item}</div></li>)}</ul>
+      <div className="two-col">
+        <div className="panel" style={{ padding: 24 }}>
+          <div className="eyebrow">360° interpretation layer</div>
+          <p style={{ margin: '14px 0 16px', lineHeight: 1.8 }}>This result combines your internal readiness inputs with organizational context so the interpretation reflects not only score patterns, but also the operating realities of your organization.</p>
+          <ul className="list-clean">{contextualInsights.map((item) => <li key={item}><span className="dot" style={{ background: '#7c9cff' }} /><div className="muted" style={{ lineHeight: 1.7 }}>{item}</div></li>)}</ul>
+        </div>
+        <div className="panel" style={{ padding: 24 }}>
+          <div className="eyebrow">Public-signal interpretation</div>
+          <p style={{ margin: '14px 0 16px', lineHeight: 1.8 }}>These observations use the organization profile and public-facing context as directional indicators. They are intended to sharpen interpretation, not replace internal validation.</p>
+          <ul className="list-clean">{publicSignalInsights.map((item) => <li key={item}><span className="dot" style={{ background: '#4ee3c1' }} /><div className="muted" style={{ lineHeight: 1.7 }}>{item}</div></li>)}</ul>
+        </div>
       </div>
 
       <div className="panel" style={{ padding: 24 }}>
