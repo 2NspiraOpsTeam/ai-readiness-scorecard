@@ -449,7 +449,7 @@ export default function AssessmentExperience() {
 
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28 }}>
                   <button className="button-primary" onClick={() => setStarted(true)}>{BRAND.ctaPrimary}</button>
-                  <a className="button-secondary" href="#product-overview">{BRAND.ctaSecondary}</a>
+                  <a className="button-secondary" href="#methodology">{BRAND.ctaSecondary}</a>
                 </div>
               </div>
               <div className="panel" style={{ padding: 24 }}>
@@ -467,12 +467,17 @@ export default function AssessmentExperience() {
 
           <OrgProfileStep orgProfile={orgProfile} setOrgProfile={setOrgProfile} />
 
-          <div className="panel" style={{ padding: 24 }}>
+          <div id="methodology" className="panel" style={{ padding: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
               <img src="/2nspira-logo.png" alt="2Nspira logo" style={{ width: 34, height: 34, objectFit: 'contain' }} />
-              <div className="eyebrow">Why 2Nspira built this</div>
+              <div className="eyebrow">Methodology & 2Nspira perspective</div>
             </div>
-            <p style={{ margin: '14px 0 0', lineHeight: 1.8, maxWidth: 980 }}>{BRAND.footerNote}</p>
+            <p style={{ margin: '14px 0 10px', lineHeight: 1.8, maxWidth: 980 }}>
+              This scorecard is designed to evaluate AI readiness as an operating capability — not just tool adoption. The model looks across strategy, governance, data, technology, risk, people, workflow integration, and trust so leaders can see where AI is truly actionable and where foundational gaps still need attention.
+            </p>
+            <p style={{ margin: 0, lineHeight: 1.8, maxWidth: 980 }}>
+              {BRAND.footerNote}
+            </p>
           </div>
         </div>
       </div>
