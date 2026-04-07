@@ -18,6 +18,7 @@ import {
 } from 'recharts';
 import { ASSESSMENT_CATEGORIES, SCALE_OPTIONS } from '@/lib/assessment-config';
 import { DEFAULT_INDUSTRY_ID, INDUSTRY_PROFILES } from '@/lib/industry-config';
+import { QUESTION_OVERRIDES } from '@/lib/question-overrides';
 import {
   generateExecutiveSummary,
   generateNextSteps,
@@ -340,6 +341,14 @@ export default function AssessmentExperience() {
 
   const currentCategory = ASSESSMENT_CATEGORIES[currentStep];
   const industryProfile = INDUSTRY_PROFILES[industryId] || INDUSTRY_PROFILES[DEFAULT_INDUSTRY_ID];
+  const questionOverrides = QUESTION_OVERRIDES[industryId] || {};
+  const displayCategory = {
+    ...currentCategory,
+    questions: currentCategory.questions.map((question) => ({
+      ...question,
+      prompt: questionOverrides[question.id] || question.prompt,
+    })),
+  };
   const completion = getCompletionStats(responses);
   const isLastStep = currentStep === ASSESSMENT_CATEGORIES.length - 1;
 
@@ -477,8 +486,8 @@ export default function AssessmentExperience() {
         <div className="card" style={{ padding: 28 }}>
           <SectionHeader
             eyebrow={`Multi-step readiness assessment · ${industryProfile.label}`}
-            title={currentCategory.title}
-            description={currentCategory.description}
+            title={displayCategory.title}
+            description={displayCategory.description}
             actions={<Pill tone="blue">Step {currentStep + 1} of {ASSESSMENT_CATEGORIES.length}</Pill>}
           />
 
@@ -520,7 +529,7 @@ export default function AssessmentExperience() {
         </div>
 
         <div className="grid">
-          {currentCategory.questions.map((question) => (
+          {displayCategory.questions.map((question) => (
             <QuestionCard
               key={question.id}
               question={question}

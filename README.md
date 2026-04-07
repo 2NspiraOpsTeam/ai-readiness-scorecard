@@ -13,6 +13,7 @@ Executive-facing MVP for assessing organizational readiness to adopt AI responsi
 - `components/` client UI and assessment experience
 - `lib/assessment-config.js` editable product configuration (categories, weights, questions, maturity levels)
 - `lib/industry-config.js` industry profiles, sector-specific recommendations, and roadmap overlays
+- `lib/question-overrides.js` sector-specific question wording overlays
 - `lib/scoring.js` scoring engine, maturity logic, archetypes, summaries, roadmap generation
 
 ## Run
