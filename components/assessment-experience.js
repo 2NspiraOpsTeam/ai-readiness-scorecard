@@ -429,8 +429,11 @@ export default function AssessmentExperience() {
             <div className="eyebrow">Executive assessment tool</div>
             <div className="hero-grid" style={{ alignItems: 'center', marginTop: 22 }}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                  <div className="eyebrow">{BRAND.company}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <img src="/2nspira-logo.png" alt="2Nspira logo" style={{ width: 42, height: 42, objectFit: 'contain' }} />
+                    <div className="eyebrow">{BRAND.company}</div>
+                  </div>
                   <div className="badge" style={{ background: 'rgba(78,227,193,0.1)', color: '#bff8eb' }}>{BRAND.tagline}</div>
                 </div>
                 <h1 className="hero-title">{BRAND.product}</h1>
@@ -465,7 +468,10 @@ export default function AssessmentExperience() {
           <OrgProfileStep orgProfile={orgProfile} setOrgProfile={setOrgProfile} />
 
           <div className="panel" style={{ padding: 24 }}>
-            <div className="eyebrow">Why 2Nspira built this</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+              <img src="/2nspira-logo.png" alt="2Nspira logo" style={{ width: 34, height: 34, objectFit: 'contain' }} />
+              <div className="eyebrow">Why 2Nspira built this</div>
+            </div>
             <p style={{ margin: '14px 0 0', lineHeight: 1.8, maxWidth: 980 }}>{BRAND.footerNote}</p>
           </div>
         </div>
