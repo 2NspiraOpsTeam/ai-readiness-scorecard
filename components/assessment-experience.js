@@ -84,7 +84,7 @@ function ScoreRing({ score, label }) {
 function QuestionCard({ question, value, onChange }) {
   return (
     <div className="panel" style={{ padding: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
+      <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 16, fontWeight: 600, lineHeight: 1.6 }}>{question.prompt}</div>
         {question.helper ? (
           <div className="muted" style={{ marginTop: 8, fontSize: 13, lineHeight: 1.55 }}>{question.helper}</div>
@@ -346,6 +346,8 @@ export default function AssessmentExperience() {
   const [industryId, setIndustryId] = useState(DEFAULT_INDUSTRY_ID);
   const [currentStep, setCurrentStep] = useState(0);
   const [showResults, setShowResults] = useState(false);
+  const [singleQuestionMode, setSingleQuestionMode] = useState(true);
+  const [questionIndex, setQuestionIndex] = useState(0);
 
   useEffect(() => {
     const saved = getInitialState();
@@ -371,6 +373,9 @@ export default function AssessmentExperience() {
   };
   const completion = getCompletionStats(responses);
   const isLastStep = currentStep === ASSESSMENT_CATEGORIES.length - 1;
+  const visibleQuestions = singleQuestionMode
+    ? [displayCategory.questions[Math.min(questionIndex, displayCategory.questions.length - 1)]].filter(Boolean)
+    : displayCategory.questions;
 
   const categoryCompletion = useMemo(() => {
     return industryCategories.map((category) => {
@@ -393,6 +398,7 @@ export default function AssessmentExperience() {
     setResponses({});
     setIndustryId(DEFAULT_INDUSTRY_ID);
     setCurrentStep(0);
+    setQuestionIndex(0);
     setShowResults(false);
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem(STORAGE_KEY);
@@ -400,11 +406,28 @@ export default function AssessmentExperience() {
   }
 
   function handleNext() {
+    if (singleQuestionMode && questionIndex < displayCategory.questions.length - 1) {
+      setQuestionIndex((value) => value + 1);
+      return;
+    }
+
     if (isLastStep) {
       setShowResults(true);
       return;
     }
+
     setCurrentStep((step) => Math.min(step + 1, ASSESSMENT_CATEGORIES.length - 1));
+    setQuestionIndex(0);
+  }
+
+  function handlePrevious() {
+    if (singleQuestionMode && questionIndex > 0) {
+      setQuestionIndex((value) => Math.max(value - 1, 0));
+      return;
+    }
+
+    setCurrentStep((step) => Math.max(step - 1, 0));
+    setQuestionIndex(0);
   }
 
   if (!started) {
@@ -523,8 +546,15 @@ export default function AssessmentExperience() {
           />
 
           <div className="panel" style={{ padding: 16, marginTop: 20 }}>
-            <div style={{ fontWeight: 700, marginBottom: 6 }}>{industryProfile.label}</div>
-            <div className="muted" style={{ lineHeight: 1.65 }}>{industryProfile.resultLens}</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+              <div>
+                <div style={{ fontWeight: 700, marginBottom: 6 }}>{industryProfile.label}</div>
+                <div className="muted" style={{ lineHeight: 1.65 }}>{industryProfile.resultLens}</div>
+              </div>
+              <button className="button-ghost" type="button" onClick={() => setSingleQuestionMode((v) => !v)}>
+                {singleQuestionMode ? 'Show all questions' : 'Focus mode'}
+              </button>
+            </div>
           </div>
 
           <div style={{ marginTop: 20 }}>
@@ -541,7 +571,10 @@ export default function AssessmentExperience() {
                 key={item.id}
                 type="button"
                 className="panel"
-                onClick={() => setCurrentStep(index)}
+                onClick={() => {
+                  setCurrentStep(index);
+                  setQuestionIndex(0);
+                }}
                 style={{
                   padding: 16,
                   textAlign: 'left',
@@ -559,8 +592,17 @@ export default function AssessmentExperience() {
           </div>
         </div>
 
+        {singleQuestionMode ? (
+          <div className="panel" style={{ padding: 18 }}>
+            <div className="eyebrow">Focused question mode</div>
+            <div style={{ marginTop: 12, fontWeight: 700 }}>
+              Question {questionIndex + 1} of {displayCategory.questions.length}
+            </div>
+          </div>
+        ) : null}
+
         <div className="grid">
-          {displayCategory.questions.map((question) => (
+          {visibleQuestions.map((question) => (
             <QuestionCard
               key={question.id}
               question={question}
@@ -576,15 +618,13 @@ export default function AssessmentExperience() {
               “Not sure” is allowed and is scored conservatively so uncertain answers do not overstate readiness. This keeps the result useful even when some details are still being clarified.
             </div>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-              <button
-                className="button-ghost"
-                onClick={() => setCurrentStep((step) => Math.max(step - 1, 0))}
-                disabled={currentStep === 0}
-              >
+              <button className="button-ghost" onClick={handlePrevious} disabled={currentStep === 0 && questionIndex === 0}>
                 Previous
               </button>
               <button className="button-primary" onClick={handleNext}>
-                {isLastStep ? 'View Results' : 'Next Section'}
+                {isLastStep && (!singleQuestionMode || questionIndex === displayCategory.questions.length - 1)
+                  ? 'View Results'
+                  : 'Next'}
               </button>
             </div>
           </div>
