@@ -429,9 +429,9 @@ export default function AssessmentExperience() {
             <div className="eyebrow">Executive assessment tool</div>
             <div className="hero-grid" style={{ alignItems: 'center', marginTop: 22 }}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <img src="/2nspira-logo.png" alt="2Nspira logo" style={{ width: 42, height: 42, objectFit: 'contain' }} />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 14 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+                    <img src="/2nspira-logo.png" alt="2Nspira logo" style={{ width: 84, height: 84, objectFit: 'contain' }} />
                     <div className="eyebrow">{BRAND.company}</div>
                   </div>
                   <div className="badge" style={{ background: 'rgba(78,227,193,0.1)', color: '#bff8eb' }}>{BRAND.tagline}</div>
