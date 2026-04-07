@@ -234,7 +234,8 @@ function ResultsView({ responses, orgProfile, industryId, industryProfile, onEdi
   const nextSteps = useMemo(() => generateNextSteps(results, industryProfile), [results, industryProfile]);
   const roadmap = useMemo(() => generateRoadmap(results, industryProfile), [results, industryProfile]);
   const narrative = RESULT_NARRATIVES[industryId] || {};
-  const contactHref = `mailto:${BRAND.contactEmail}?subject=${encodeURIComponent(BRAND.contactSubject)}&body=${encodeURIComponent(`Hello 2Nspira,\n\nI completed the AI Readiness Scorecard and would like to discuss next steps.\n\nOrganization: ${orgProfile.organizationName || ''}\nSector: ${industryProfile.label}\nRole: ${orgProfile.role || ''}\nOrganization Size: ${orgProfile.organizationSize || ''}\nAI Experience: ${orgProfile.aiExperience || ''}\nOverall Score: ${results.overallScore}\nMaturity Level: ${results.maturity.label}\n\nPlease follow up with me regarding advisory support.\n`)}`;
+  const contactHref = `mailto:${BRAND.contactEmail}?subject=${encodeURIComponent(BRAND.contactSubject)}&body=${encodeURIComponent(`Hello 2Nspira,\n\nI completed the AI Readiness Scorecard and would like to discuss next steps.\n\nOrganization: ${orgProfile.organizationName || ''}\nSector: ${industryProfile.label}\nRole: ${orgProfile.role || ''}\nOrganization Size: ${orgProfile.organizationSize || ''}\nAI Experience: ${orgProfile.aiExperience || ''}\nEmail: ${orgProfile.email || ''}\nOverall Score: ${results.overallScore}\nMaturity Level: ${results.maturity.label}\n\nPlease follow up with me regarding advisory support.\n`)}`;
+  const reportRequestHref = `mailto:${BRAND.contactEmail}?subject=${encodeURIComponent('AI Readiness Scorecard Report Request')}&body=${encodeURIComponent(`Hello 2Nspira,\n\nPlease send me a follow-up regarding my AI Readiness Scorecard results.\n\nOrganization: ${orgProfile.organizationName || ''}\nSector: ${industryProfile.label}\nRole: ${orgProfile.role || ''}\nOrganization Size: ${orgProfile.organizationSize || ''}\nAI Experience: ${orgProfile.aiExperience || ''}\nEmail: ${orgProfile.email || ''}\nOverall Score: ${results.overallScore}\nMaturity Level: ${results.maturity.label}\n\nThank you.\n`)}`;
 
   return (
     <div className="grid" style={{ gap: 24 }}>
@@ -321,9 +322,26 @@ function ResultsView({ responses, orgProfile, industryId, industryProfile, onEdi
         <div className="eyebrow">{BRAND.company} Advisory</div>
         <h3 style={{ fontSize: 28, margin: '14px 0 10px', letterSpacing: '-0.03em' }}>{BRAND.advisoryCtaTitle}</h3>
         <p className="muted" style={{ margin: 0, maxWidth: 840, lineHeight: 1.75 }}>{BRAND.advisoryCtaBody}</p>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 18 }}>
-          <a className="button-primary" href={contactHref}>{BRAND.advisoryPrimary}</a>
-          <a className="button-secondary" href={contactHref}>{BRAND.advisorySecondary}</a>
+        <div className="two-col" style={{ marginTop: 18 }}>
+          <div className="panel" style={{ padding: 16 }}>
+            <div style={{ fontWeight: 700, marginBottom: 8 }}>Report follow-up</div>
+            <div className="muted" style={{ lineHeight: 1.65 }}>
+              Use your scorecard results to request a follow-up conversation or a summary report from 2Nspira.
+            </div>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 16 }}>
+              <a className="button-primary" href={reportRequestHref}>Email me my follow-up</a>
+            </div>
+          </div>
+          <div className="panel" style={{ padding: 16 }}>
+            <div style={{ fontWeight: 700, marginBottom: 8 }}>Talk with 2Nspira</div>
+            <div className="muted" style={{ lineHeight: 1.65 }}>
+              Reach out directly with your organization context and score so 2Nspira can recommend next steps.
+            </div>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 16 }}>
+              <a className="button-primary" href={contactHref}>{BRAND.advisoryPrimary}</a>
+              <a className="button-secondary" href={contactHref}>{BRAND.advisorySecondary}</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
