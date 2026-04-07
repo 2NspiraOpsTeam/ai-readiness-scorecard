@@ -32,7 +32,7 @@ import {
 import { Pill, SectionHeader, StatCard } from '@/components/ui';
 
 const STORAGE_KEY = 'ai-readiness-scorecard-v1';
-const COLORS = ['#1d4ed8', '#0f766e', '#334155', '#64748b', '#94a3b8'];
+const COLORS = ['#7c9cff', '#4ee3c1', '#94a3b8', '#64748b', '#c4b5fd'];
 
 function getInitialState() {
   if (typeof window === 'undefined') {
@@ -83,7 +83,7 @@ function QuestionCard({ question, value, onChange }) {
   return (
     <div className="panel" style={{ padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
-        <div style={{ fontSize: 16, fontWeight: 600, lineHeight: 1.55 }}>{question.prompt}</div>
+        <div style={{ fontSize: 16, fontWeight: 600, lineHeight: 1.6 }}>{question.prompt}</div>
       </div>
       <div className="question-scale">
         {SCALE_OPTIONS.map((option) => {
@@ -96,8 +96,8 @@ function QuestionCard({ question, value, onChange }) {
               onClick={() => onChange(question.id, option.value)}
             >
               <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{option.label}</div>
-              <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 3 }}>{option.shortLabel}</div>
-              <div className="muted" style={{ fontSize: 12, lineHeight: 1.35 }}>{option.description}</div>
+              <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 3 }}>{option.shortLabel}</div>
+              <div className="muted" style={{ fontSize: 12, lineHeight: 1.4 }}>{option.description}</div>
             </button>
           );
         })}
@@ -114,14 +114,14 @@ function CategoryBreakdown({ results }) {
   }));
 
   return (
-    <div className="grid" style={{ gridTemplateColumns: '1.15fr 0.85fr' }}>
+    <div className="two-col">
       <div className="panel" style={{ padding: 20, minHeight: 380 }}>
         <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 18 }}>Category performance</div>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData} layout="vertical" margin={{ top: 0, right: 24, bottom: 0, left: 18 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.18)" />
-            <XAxis type="number" domain={[0, 100]} stroke="#64748b" />
-            <YAxis type="category" dataKey="short" stroke="#64748b" width={110} />
+            <XAxis type="number" domain={[0, 100]} stroke="#94a3b8" />
+            <YAxis type="category" dataKey="short" stroke="#94a3b8" width={110} />
             <Tooltip />
             <Bar dataKey="score" radius={[0, 10, 10, 0]}>
               {chartData.map((_, index) => (
@@ -137,9 +137,9 @@ function CategoryBreakdown({ results }) {
         <ResponsiveContainer width="100%" height={300}>
           <RadarChart outerRadius="72%" data={chartData}>
             <PolarGrid stroke="rgba(148,163,184,0.22)" />
-            <PolarAngleAxis dataKey="short" tick={{ fill: '#475569', fontSize: 12 }} />
+            <PolarAngleAxis dataKey="short" tick={{ fill: '#a8b3cf', fontSize: 12 }} />
             <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
-            <Radar dataKey="score" stroke="#1d4ed8" fill="#1d4ed8" fillOpacity={0.2} strokeWidth={2} />
+            <Radar dataKey="score" stroke="#7c9cff" fill="#7c9cff" fillOpacity={0.24} strokeWidth={2} />
           </RadarChart>
         </ResponsiveContainer>
       </div>
@@ -165,9 +165,9 @@ function ResultsView({ responses, industryProfile, onEdit }) {
           actions={<button className="button-secondary" onClick={onEdit}>Edit responses</button>}
         />
 
-        <div className="grid" style={{ gridTemplateColumns: '280px 1fr', marginTop: 28, alignItems: 'center' }}>
+        <div className="results-hero" style={{ marginTop: 28, alignItems: 'center' }}>
           <ScoreRing score={results.overallScore} label="Overall Score" />
-          <div className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
+          <div className="three-col">
             <StatCard label="Maturity level" value={results.maturity.label} helper={results.maturity.summary} />
             <StatCard label="Sector" value={industryProfile.label} helper={industryProfile.audience} />
             <StatCard label="Assessment completion" value={formatPercent(Math.round(results.completionRatio * 100))} helper="Includes answered and not-sure responses." />
@@ -177,25 +177,25 @@ function ResultsView({ responses, industryProfile, onEdit }) {
 
       <CategoryBreakdown results={results} />
 
-      <div className="grid" style={{ gridTemplateColumns: '1.1fr 0.9fr' }}>
+      <div className="two-col">
         <div className="panel" style={{ padding: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
             <Pill tone="blue">Executive summary</Pill>
             <Pill>{results.maturity.label}</Pill>
             <Pill tone="green">{results.archetype.label}</Pill>
           </div>
-          <p style={{ margin: 0, fontSize: 17, lineHeight: 1.8 }}>{summary}</p>
-          <p className="muted" style={{ marginTop: 14, marginBottom: 0, lineHeight: 1.7 }}>
+          <p style={{ margin: 0, fontSize: 17, lineHeight: 1.85 }}>{summary}</p>
+          <p className="muted" style={{ marginTop: 14, marginBottom: 0, lineHeight: 1.75 }}>
             {industryProfile.resultLens}
           </p>
-          <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', marginTop: 22 }}>
+          <div className="two-col" style={{ marginTop: 22 }}>
             <div className="panel" style={{ padding: 18 }}>
               <div style={{ fontWeight: 700, marginBottom: 8 }}>Strengths</div>
-              <p className="muted" style={{ margin: 0, lineHeight: 1.65 }}>{results.maturity.strengths}</p>
+              <p className="muted" style={{ margin: 0, lineHeight: 1.7 }}>{results.maturity.strengths}</p>
             </div>
             <div className="panel" style={{ padding: 18 }}>
               <div style={{ fontWeight: 700, marginBottom: 8 }}>Watchouts</div>
-              <p className="muted" style={{ margin: 0, lineHeight: 1.65 }}>{results.maturity.warning}</p>
+              <p className="muted" style={{ margin: 0, lineHeight: 1.7 }}>{results.maturity.warning}</p>
             </div>
           </div>
         </div>
@@ -218,16 +218,16 @@ function ResultsView({ responses, industryProfile, onEdit }) {
         </div>
       </div>
 
-      <div className="grid" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
+      <div className="two-col">
         <div className="panel" style={{ padding: 24 }}>
           <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 14 }}>Top 3 strengths</div>
           <ul className="list-clean">
             {strengths.map((item) => (
               <li key={item.title}>
-                <span className="dot" style={{ background: '#0f766e' }} />
+                <span className="dot" style={{ background: '#4ee3c1' }} />
                 <div>
                   <div style={{ fontWeight: 600 }}>{item.title}</div>
-                  <div className="muted" style={{ lineHeight: 1.6 }}>{item.text}</div>
+                  <div className="muted" style={{ lineHeight: 1.7 }}>{item.text}</div>
                 </div>
               </li>
             ))}
@@ -239,10 +239,10 @@ function ResultsView({ responses, industryProfile, onEdit }) {
           <ul className="list-clean">
             {gaps.map((item) => (
               <li key={item.title}>
-                <span className="dot" style={{ background: '#b42318' }} />
+                <span className="dot" style={{ background: '#ff8b8b' }} />
                 <div>
                   <div style={{ fontWeight: 600 }}>{item.title}</div>
-                  <div className="muted" style={{ lineHeight: 1.6 }}>{item.text}</div>
+                  <div className="muted" style={{ lineHeight: 1.7 }}>{item.text}</div>
                 </div>
               </li>
             ))}
@@ -250,14 +250,14 @@ function ResultsView({ responses, industryProfile, onEdit }) {
         </div>
       </div>
 
-      <div className="grid" style={{ gridTemplateColumns: '0.95fr 1.05fr' }}>
+      <div className="two-col">
         <div className="panel" style={{ padding: 24 }}>
           <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 14 }}>Recommended next steps</div>
           <ul className="list-clean">
             {nextSteps.map((step) => (
               <li key={step}>
-                <span className="dot" style={{ background: '#1d4ed8' }} />
-                <div className="muted" style={{ lineHeight: 1.6 }}>{step}</div>
+                <span className="dot" style={{ background: '#7c9cff' }} />
+                <div className="muted" style={{ lineHeight: 1.7 }}>{step}</div>
               </li>
             ))}
           </ul>
@@ -265,7 +265,7 @@ function ResultsView({ responses, industryProfile, onEdit }) {
 
         <div className="panel" style={{ padding: 24 }}>
           <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 14 }}>30-60-90 day roadmap</div>
-          <div className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
+          <div className="three-col">
             {[
               { label: '30 Days', items: roadmap.day30 },
               { label: '60 Days', items: roadmap.day60 },
@@ -276,8 +276,8 @@ function ResultsView({ responses, industryProfile, onEdit }) {
                 <ul className="list-clean" style={{ gap: 10 }}>
                   {phase.items.map((item) => (
                     <li key={item}>
-                      <span className="dot" style={{ background: '#0f766e' }} />
-                      <div className="muted" style={{ fontSize: 14, lineHeight: 1.5 }}>{item}</div>
+                      <span className="dot" style={{ background: '#4ee3c1' }} />
+                      <div className="muted" style={{ fontSize: 14, lineHeight: 1.55 }}>{item}</div>
                     </li>
                   ))}
                 </ul>
@@ -292,17 +292,17 @@ function ResultsView({ responses, industryProfile, onEdit }) {
           <div>
             <div className="eyebrow">Export-friendly executive memo</div>
             <h3 style={{ fontSize: 28, margin: '14px 0 8px', letterSpacing: '-0.03em' }}>AI Readiness Scorecard report</h3>
-            <p className="muted" style={{ margin: 0, maxWidth: 760, lineHeight: 1.7 }}>
+            <p className="muted" style={{ margin: 0, maxWidth: 760, lineHeight: 1.75 }}>
               This section is intentionally structured for future PDF export, print styling, or downstream report generation.
             </p>
           </div>
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
             <button className="button-secondary" onClick={() => window.print()}>Print / Save PDF</button>
             <button className="button-ghost" type="button">Email me my report</button>
           </div>
         </div>
 
-        <div className="grid" style={{ gridTemplateColumns: '260px 1fr', alignItems: 'start' }}>
+        <div className="two-col" style={{ alignItems: 'start' }}>
           <div className="panel" style={{ padding: 18 }}>
             <div className="muted" style={{ fontSize: 13, fontWeight: 600 }}>Overall AI Readiness Score</div>
             <div style={{ fontSize: 56, fontWeight: 700, letterSpacing: '-0.05em', marginTop: 8 }}>{results.overallScore}</div>
@@ -314,7 +314,7 @@ function ResultsView({ responses, industryProfile, onEdit }) {
           <div className="panel" style={{ padding: 18 }}>
             <div style={{ fontWeight: 700, marginBottom: 10 }}>Executive summary</div>
             <p style={{ margin: 0, lineHeight: 1.75 }}>{summary}</p>
-            <p className="muted" style={{ marginTop: 12, marginBottom: 0, lineHeight: 1.65 }}>{industryProfile.resultLens}</p>
+            <p className="muted" style={{ marginTop: 12, marginBottom: 0, lineHeight: 1.7 }}>{industryProfile.resultLens}</p>
           </div>
         </div>
       </div>
@@ -393,9 +393,9 @@ export default function AssessmentExperience() {
     return (
       <div className="page-shell">
         <div className="container grid" style={{ gap: 28 }}>
-          <div className="card" style={{ padding: 34 }}>
+          <div className="card" style={{ padding: 28 }}>
             <div className="eyebrow">Executive assessment tool</div>
-            <div className="grid" style={{ gridTemplateColumns: '1.15fr 0.85fr', alignItems: 'center', marginTop: 22 }}>
+            <div className="hero-grid" style={{ alignItems: 'center', marginTop: 22 }}>
               <div>
                 <h1 className="hero-title">AI Readiness Scorecard</h1>
                 <p className="muted" style={{ fontSize: 18, lineHeight: 1.8, maxWidth: 720 }}>
@@ -404,20 +404,20 @@ export default function AssessmentExperience() {
 
                 <div className="panel" style={{ padding: 18, marginTop: 24, maxWidth: 780 }}>
                   <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Select your sector</div>
-                  <div className="grid" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
+                  <div className="sector-grid">
                     {Object.values(INDUSTRY_PROFILES).map((profile) => {
                       const active = profile.id === industryId;
                       return (
                         <button
                           key={profile.id}
                           type="button"
-                          className="panel"
+                          className="panel sector-card"
                           onClick={() => setIndustryId(profile.id)}
                           style={{
-                            padding: 16,
-                            textAlign: 'left',
-                            borderColor: active ? 'rgba(29,78,216,0.35)' : undefined,
-                            background: active ? 'rgba(29,78,216,0.06)' : '#fff',
+                            borderColor: active ? 'rgba(124,156,255,0.48)' : undefined,
+                            background: active
+                              ? 'linear-gradient(180deg, rgba(124,156,255,0.16), rgba(124,156,255,0.08))'
+                              : undefined,
                           }}
                         >
                           <div style={{ fontWeight: 700 }}>{profile.label}</div>
@@ -434,7 +434,7 @@ export default function AssessmentExperience() {
                 </div>
               </div>
               <div className="panel" style={{ padding: 24 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: '#1d4ed8', marginBottom: 16 }}>{industryProfile.label}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#dce5ff', marginBottom: 16 }}>{industryProfile.label}</div>
                 <ul className="list-clean">
                   {[
                     industryProfile.headline,
@@ -444,8 +444,8 @@ export default function AssessmentExperience() {
                     'A recommended 30-60-90 day roadmap',
                   ].map((item) => (
                     <li key={item}>
-                      <span className="dot" style={{ background: '#1d4ed8' }} />
-                      <div className="muted" style={{ lineHeight: 1.6 }}>{item}</div>
+                      <span className="dot" style={{ background: '#7c9cff' }} />
+                      <div className="muted" style={{ lineHeight: 1.65 }}>{item}</div>
                     </li>
                   ))}
                 </ul>
@@ -453,10 +453,10 @@ export default function AssessmentExperience() {
             </div>
           </div>
 
-          <div id="product-overview" className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
+          <div id="product-overview" className="three-col">
             <StatCard label="Audience" value={industryProfile.shortLabel} helper={industryProfile.audience} />
             <StatCard label="Assessment scope" value="8 Categories" helper="Covers strategy, governance, data, technology, risk, people, workflows, and trust." />
-            <StatCard label="Experience" value="Industry-aware" helper="Tailored guidance and roadmap framing based on the sector you select." />
+            <StatCard label="Experience" value="Premium MVP" helper="Tailored sector logic with an executive-style scoring and roadmap experience." />
           </div>
         </div>
       </div>
@@ -485,7 +485,7 @@ export default function AssessmentExperience() {
   return (
     <div className="page-shell">
       <div className="container grid" style={{ gap: 22 }}>
-        <div className="card" style={{ padding: 28 }}>
+        <div className="card" style={{ padding: 24 }}>
           <SectionHeader
             eyebrow={`Multi-step readiness assessment · ${industryProfile.label}`}
             title={displayCategory.title}
@@ -495,7 +495,7 @@ export default function AssessmentExperience() {
 
           <div className="panel" style={{ padding: 16, marginTop: 20 }}>
             <div style={{ fontWeight: 700, marginBottom: 6 }}>{industryProfile.label}</div>
-            <div className="muted" style={{ lineHeight: 1.6 }}>{industryProfile.resultLens}</div>
+            <div className="muted" style={{ lineHeight: 1.65 }}>{industryProfile.resultLens}</div>
           </div>
 
           <div style={{ marginTop: 20 }}>
@@ -506,7 +506,7 @@ export default function AssessmentExperience() {
             <div className="progress-bar"><span style={{ width: `${completion.progressPercent}%` }} /></div>
           </div>
 
-          <div className="grid" style={{ gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', marginTop: 20 }}>
+          <div className="four-col" style={{ marginTop: 20 }}>
             {categoryCompletion.map((item, index) => (
               <button
                 key={item.id}
@@ -516,8 +516,8 @@ export default function AssessmentExperience() {
                 style={{
                   padding: 16,
                   textAlign: 'left',
-                  borderColor: index === currentStep ? 'rgba(29,78,216,0.35)' : undefined,
-                  background: index === currentStep ? 'rgba(29,78,216,0.06)' : undefined,
+                  borderColor: index === currentStep ? 'rgba(124,156,255,0.45)' : undefined,
+                  background: index === currentStep ? 'rgba(124,156,255,0.08)' : undefined,
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'center' }}>
@@ -543,7 +543,7 @@ export default function AssessmentExperience() {
 
         <div className="card" style={{ padding: 20 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-            <div className="muted" style={{ maxWidth: 720, lineHeight: 1.65 }}>
+            <div className="muted" style={{ maxWidth: 720, lineHeight: 1.7 }}>
               “Not sure” is allowed and is scored conservatively so uncertain answers do not overstate readiness. This keeps the result useful even when some details are still being clarified.
             </div>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
