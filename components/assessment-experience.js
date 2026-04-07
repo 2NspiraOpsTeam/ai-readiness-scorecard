@@ -19,6 +19,7 @@ import {
 import { ASSESSMENT_CATEGORIES, SCALE_OPTIONS } from '@/lib/assessment-config';
 import { DEFAULT_INDUSTRY_ID, INDUSTRY_PROFILES } from '@/lib/industry-config';
 import { QUESTION_OVERRIDES } from '@/lib/question-overrides';
+import { INDUSTRY_QUESTION_SETS } from '@/lib/question-sets';
 import {
   generateExecutiveSummary,
   generateNextSteps,
@@ -339,7 +340,8 @@ export default function AssessmentExperience() {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ responses, industryId }));
   }, [responses, industryId]);
 
-  const currentCategory = ASSESSMENT_CATEGORIES[currentStep];
+  const industryCategories = INDUSTRY_QUESTION_SETS[industryId] || ASSESSMENT_CATEGORIES;
+  const currentCategory = industryCategories[currentStep];
   const industryProfile = INDUSTRY_PROFILES[industryId] || INDUSTRY_PROFILES[DEFAULT_INDUSTRY_ID];
   const questionOverrides = QUESTION_OVERRIDES[industryId] || {};
   const displayCategory = {
@@ -353,7 +355,7 @@ export default function AssessmentExperience() {
   const isLastStep = currentStep === ASSESSMENT_CATEGORIES.length - 1;
 
   const categoryCompletion = useMemo(() => {
-    return ASSESSMENT_CATEGORIES.map((category) => {
+    return industryCategories.map((category) => {
       const answered = category.questions.filter((question) => responses[question.id] !== undefined).length;
       return {
         id: category.id,
@@ -363,7 +365,7 @@ export default function AssessmentExperience() {
         percent: Math.round((answered / category.questions.length) * 100),
       };
     });
-  }, [responses]);
+  }, [responses, industryCategories]);
 
   function updateResponse(questionId, value) {
     setResponses((current) => ({ ...current, [questionId]: value }));

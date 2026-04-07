@@ -13,7 +13,8 @@ Executive-facing MVP for assessing organizational readiness to adopt AI responsi
 - `components/` client UI and assessment experience
 - `lib/assessment-config.js` editable product configuration (categories, weights, questions, maturity levels)
 - `lib/industry-config.js` industry profiles, sector-specific recommendations, and roadmap overlays
-- `lib/question-overrides.js` sector-specific question wording overlays
+- `lib/question-overrides.js` sector-specific wording overlays for lighter customization
+- `lib/question-sets.js` deeper sector-specific question sets for priority markets
 - `lib/scoring.js` scoring engine, maturity logic, archetypes, summaries, roadmap generation
 
 ## Run
@@ -29,3 +30,4 @@ Then open `http://localhost:3000`.
 - Print styles are not fully specialized yet, but the export section is intentionally structured for easy PDF/report support.
 - Questions, weights, and maturity text can be updated without rewriting the UI.
 - Industry-specific versions are driven by `lib/industry-config.js`.
+- Educational Institutions, Small Businesses, and IT Teams now use deeper tailored question sets.
