@@ -443,7 +443,7 @@ export default function AssessmentExperience() {
                   <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Select your sector</div>
                   <div className="sector-grid">{Object.values(INDUSTRY_PROFILES).map((profile) => {
                     const active = profile.id === industryId;
-                    return <button key={profile.id} type="button" className="panel sector-card" onClick={() => setIndustryId(profile.id)} style={{ borderColor: active ? 'rgba(124,156,255,0.48)' : undefined, background: active ? 'linear-gradient(180deg, rgba(124,156,255,0.16), rgba(124,156,255,0.08))' : undefined }}><div style={{ fontWeight: 700 }}>{profile.label}</div><div className="muted" style={{ marginTop: 6, lineHeight: 1.55, fontSize: 14 }}>{profile.description}</div></button>;
+                    return <button key={profile.id} type="button" className="panel sector-card" onClick={() => setIndustryId(profile.id)} style={{ borderColor: active ? 'rgba(124,156,255,0.48)' : undefined, background: active ? 'linear-gradient(180deg, rgba(124,156,255,0.16), rgba(124,156,255,0.08))' : undefined }}><div style={{ fontWeight: 700, color: '#f3f6ff' }}>{profile.label}</div><div className="muted" style={{ marginTop: 6, lineHeight: 1.55, fontSize: 14 }}>{profile.description}</div></button>;
                   })}</div>
                 </div>
 
@@ -453,7 +453,7 @@ export default function AssessmentExperience() {
                 </div>
               </div>
               <div className="panel" style={{ padding: 24 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: '#dce5ff', marginBottom: 16 }}>{industryProfile.label}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#f3f6ff', marginBottom: 16 }}>{industryProfile.label}</div>
                 <ul className="list-clean">{[industryProfile.headline, `Primary priorities: ${industryProfile.priorities.join(', ')}`, 'Executive maturity tier and category-level performance breakdown', 'Priority gaps, strengths, and next steps', 'A recommended 30-60-90 day roadmap'].map((item) => <li key={item}><span className="dot" style={{ background: '#7c9cff' }} /><div className="muted" style={{ lineHeight: 1.65 }}>{item}</div></li>)}</ul>
               </div>
             </div>
@@ -493,7 +493,7 @@ export default function AssessmentExperience() {
 
           <div className="panel" style={{ padding: 16, marginTop: 20 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-              <div><div style={{ fontWeight: 700, marginBottom: 6 }}>{industryProfile.label}</div><div className="muted" style={{ lineHeight: 1.65 }}>{industryProfile.resultLens}</div></div>
+              <div><div style={{ fontWeight: 700, marginBottom: 6, color: '#f3f6ff' }}>{industryProfile.label}</div><div className="muted" style={{ lineHeight: 1.65 }}>{industryProfile.resultLens}</div></div>
               <button className="button-ghost" type="button" onClick={() => setSingleQuestionMode((v) => !v)}>{singleQuestionMode ? 'Show all questions' : 'Focus mode'}</button>
             </div>
           </div>
