@@ -21,6 +21,7 @@ import { DEFAULT_INDUSTRY_ID, INDUSTRY_PROFILES } from '@/lib/industry-config';
 import { QUESTION_OVERRIDES } from '@/lib/question-overrides';
 import { INDUSTRY_QUESTION_SETS } from '@/lib/question-sets';
 import { BRAND } from '@/lib/brand-config';
+import { RESULT_NARRATIVES } from '@/lib/result-narratives';
 import {
   generateExecutiveSummary,
   generateNextSteps,
@@ -85,6 +86,9 @@ function QuestionCard({ question, value, onChange }) {
     <div className="panel" style={{ padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
         <div style={{ fontSize: 16, fontWeight: 600, lineHeight: 1.6 }}>{question.prompt}</div>
+        {question.helper ? (
+          <div className="muted" style={{ marginTop: 8, fontSize: 13, lineHeight: 1.55 }}>{question.helper}</div>
+        ) : null}
       </div>
       <div className="question-scale">
         {SCALE_OPTIONS.map((option) => {
@@ -148,13 +152,14 @@ function CategoryBreakdown({ results }) {
   );
 }
 
-function ResultsView({ responses, industryProfile, onEdit }) {
+function ResultsView({ responses, industryId, industryProfile, onEdit }) {
   const results = useMemo(() => scoreAssessment(responses), [responses]);
   const summary = useMemo(() => generateExecutiveSummary(results), [results]);
   const strengths = useMemo(() => generateStrengths(results), [results]);
   const gaps = useMemo(() => generatePriorityGaps(results, industryProfile), [results, industryProfile]);
   const nextSteps = useMemo(() => generateNextSteps(results, industryProfile), [results, industryProfile]);
   const roadmap = useMemo(() => generateRoadmap(results, industryProfile), [results, industryProfile]);
+  const narrative = RESULT_NARRATIVES[industryId] || {};
 
   return (
     <div className="grid" style={{ gap: 24 }}>
@@ -221,7 +226,7 @@ function ResultsView({ responses, industryProfile, onEdit }) {
 
       <div className="two-col">
         <div className="panel" style={{ padding: 24 }}>
-          <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 14 }}>Top 3 strengths</div>
+          <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 14 }}>{narrative.strengthsLabel || 'Top 3 strengths'}</div>
           <ul className="list-clean">
             {strengths.map((item) => (
               <li key={item.title}>
@@ -236,7 +241,7 @@ function ResultsView({ responses, industryProfile, onEdit }) {
         </div>
 
         <div className="panel" style={{ padding: 24 }}>
-          <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 14 }}>Top 3 priority gaps</div>
+          <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 14 }}>{narrative.gapsLabel || 'Top 3 priority gaps'}</div>
           <ul className="list-clean">
             {gaps.map((item) => (
               <li key={item.title}>
@@ -253,7 +258,7 @@ function ResultsView({ responses, industryProfile, onEdit }) {
 
       <div className="two-col">
         <div className="panel" style={{ padding: 24 }}>
-          <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 14 }}>Recommended next steps</div>
+          <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 14 }}>{narrative.nextStepsLabel || 'Recommended next steps'}</div>
           <ul className="list-clean">
             {nextSteps.map((step) => (
               <li key={step}>
@@ -304,7 +309,7 @@ function ResultsView({ responses, industryProfile, onEdit }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 18 }}>
           <div>
             <div className="eyebrow">Export-friendly executive memo</div>
-            <h3 style={{ fontSize: 28, margin: '14px 0 8px', letterSpacing: '-0.03em' }}>AI Readiness Scorecard report</h3>
+            <h3 style={{ fontSize: 28, margin: '14px 0 8px', letterSpacing: '-0.03em' }}>{narrative.reportLabel || 'AI Readiness Scorecard report'}</h3>
             <p className="muted" style={{ margin: 0, maxWidth: 760, lineHeight: 1.75 }}>
               This section is intentionally structured for future PDF export, print styling, or downstream report generation.
             </p>
@@ -500,7 +505,7 @@ export default function AssessmentExperience() {
               <button className="button-ghost" onClick={clearAssessment}>Reset assessment</button>
             </div>
           </div>
-          <ResultsView responses={responses} industryProfile={industryProfile} onEdit={() => setShowResults(false)} />
+          <ResultsView responses={responses} industryId={industryId} industryProfile={industryProfile} onEdit={() => setShowResults(false)} />
         </div>
       </div>
     );
