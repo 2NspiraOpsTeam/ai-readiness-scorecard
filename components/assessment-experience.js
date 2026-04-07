@@ -160,6 +160,9 @@ function ResultsView({ responses, industryId, industryProfile, onEdit }) {
   const nextSteps = useMemo(() => generateNextSteps(results, industryProfile), [results, industryProfile]);
   const roadmap = useMemo(() => generateRoadmap(results, industryProfile), [results, industryProfile]);
   const narrative = RESULT_NARRATIVES[industryId] || {};
+  const contactHref = `mailto:${BRAND.contactEmail}?subject=${encodeURIComponent(BRAND.contactSubject)}&body=${encodeURIComponent(
+    `Hello 2Nspira,\n\nI completed the AI Readiness Scorecard and would like to discuss next steps.\n\nSector: ${industryProfile.label}\nOverall Score: ${results.overallScore}\nMaturity Level: ${results.maturity.label}\n\nPlease follow up with me regarding advisory support.\n`
+  )}`;
 
   return (
     <div className="grid" style={{ gap: 24 }}>
@@ -300,8 +303,8 @@ function ResultsView({ responses, industryId, industryProfile, onEdit }) {
           {BRAND.advisoryCtaBody}
         </p>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 18 }}>
-          <button className="button-primary" type="button">{BRAND.advisoryPrimary}</button>
-          <button className="button-secondary" type="button">{BRAND.advisorySecondary}</button>
+          <a className="button-primary" href={contactHref}>{BRAND.advisoryPrimary}</a>
+          <a className="button-secondary" href={contactHref}>{BRAND.advisorySecondary}</a>
         </div>
       </div>
 
