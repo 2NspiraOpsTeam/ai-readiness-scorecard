@@ -355,10 +355,7 @@ export default function AssessmentExperience() {
             <div className="hero-grid" style={{ alignItems: 'center', marginTop: 22 }}>
               <div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 14 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-                    <img src="/2nspira-logo.png" alt="2Nspira logo" style={{ width: 96, height: 96, objectFit: 'cover', borderRadius: '50%' }} />
-                    <div className="eyebrow">{BRAND.company}</div>
-                  </div>
+                  <div className="eyebrow">{BRAND.company}</div>
                   <div className="badge" style={{ background: 'rgba(78,227,193,0.1)', color: '#bff8eb' }}>{BRAND.tagline}</div>
                 </div>
                 <h1 className="hero-title">{BRAND.product}</h1>
