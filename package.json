@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy:cloudflare": "npm run build && npx wrangler deploy",
+    "deploy:cloudflare": "npm run build:cloudflare && wrangler deploy --config wrangler.json",
     "test": "node --test tests/scoring.test.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "build:cloudflare": "npm run build && node scripts/write-build-info.mjs",
+    "deploy:preview": "npm run build:cloudflare && wrangler deploy --config wrangler.preview.json"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -24,6 +26,7 @@
     "source-map-js": "1.2.2"
   },
   "devDependencies": {
-    "@playwright/test": "^1.65.1"
+    "@playwright/test": "^1.65.1",
+    "wrangler": "^4.166.0"
   }
 }
