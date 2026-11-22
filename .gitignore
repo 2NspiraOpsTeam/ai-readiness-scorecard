@@ -12,3 +12,6 @@ pnpm-debug.log*
 .vercel
 
 .wrangler/
+
+test-results/
+playwright-report/

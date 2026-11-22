@@ -172,8 +172,22 @@ function CategoryBreakdown({ results }) {
   return <div className="two-col"><div className="panel" style={{ padding: 20, minHeight: 380 }}><div style={{ fontSize: 18, fontWeight: 700, marginBottom: 18 }}>Category performance</div><ResponsiveContainer width="100%" height={300}><BarChart data={chartData} layout="vertical" margin={{ top: 0, right: 24, bottom: 0, left: 18 }}><CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.18)" /><XAxis type="number" domain={[0, 100]} stroke="#94a3b8" /><YAxis type="category" dataKey="short" stroke="#94a3b8" width={110} /><Tooltip /><Bar dataKey="score" radius={[0, 10, 10, 0]}>{chartData.map((_, index) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)}</Bar></BarChart></ResponsiveContainer></div><div className="panel" style={{ padding: 20, minHeight: 380 }}><div style={{ fontSize: 18, fontWeight: 700, marginBottom: 18 }}>Readiness shape</div><ResponsiveContainer width="100%" height={300}><RadarChart outerRadius="72%" data={chartData}><PolarGrid stroke="rgba(148,163,184,0.22)" /><PolarAngleAxis dataKey="short" tick={{ fill: '#a8b3cf', fontSize: 12 }} /><PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} /><Radar dataKey="score" stroke="#7c9cff" fill="#7c9cff" fillOpacity={0.24} strokeWidth={2} /></RadarChart></ResponsiveContainer></div></div>;
 }
 
-function ResultsView({ responses, orgProfile, industryId, industryProfile, onEdit }) {
+function ResultsView({ responses, ...props }) {
   const results = useMemo(() => scoreAssessment(responses), [responses]);
+
+  if (!results.answeredCount) {
+    return (
+      <div className="card" style={{ padding: 28 }}>
+        <SectionHeader eyebrow="Assessment status" title="Incomplete" description="Answer at least one question to see your AI readiness results." />
+        <button className="button-primary" style={{ marginTop: 20 }} onClick={props.onEdit}>Answer a question</button>
+      </div>
+    );
+  }
+
+  return <ScoredResultsView results={results} {...props} />;
+}
+
+function ScoredResultsView({ results, orgProfile, industryId, industryProfile, onEdit }) {
   const summary = useMemo(() => generateExecutiveSummary(results, { orgProfile }), [results, orgProfile]);
   const strengths = useMemo(() => generateStrengths(results), [results]);
   const gaps = useMemo(() => generatePriorityGaps(results, industryProfile), [results, industryProfile]);
@@ -401,7 +415,7 @@ export default function AssessmentExperience() {
   }
 
   if (showResults) {
-    return <div className="page-shell"><div className="container"><div style={{ display: 'flex', justifyContent: 'space-between', gap: 14, marginBottom: 20, flexWrap: 'wrap' }}><div><div className="eyebrow">Assessment complete</div></div><div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}><button className="button-secondary" onClick={() => setShowResults(false)}>Back to assessment</button><button className="button-ghost" onClick={clearAssessment}>Reset assessment</button></div></div><ResultsView responses={responses} orgProfile={orgProfile} industryId={industryId} industryProfile={industryProfile} onEdit={() => setShowResults(false)} /></div></div>;
+    return <div className="page-shell"><div className="container"><div style={{ display: 'flex', justifyContent: 'space-between', gap: 14, marginBottom: 20, flexWrap: 'wrap' }}><div><div className="eyebrow">{completion.answeredQuestions ? 'Assessment results' : 'Assessment incomplete'}</div></div><div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}><button className="button-secondary" onClick={() => setShowResults(false)}>Back to assessment</button><button className="button-ghost" onClick={clearAssessment}>Reset assessment</button></div></div><ResultsView responses={responses} orgProfile={orgProfile} industryId={industryId} industryProfile={industryProfile} onEdit={() => setShowResults(false)} /></div></div>;
   }
 
   return (
